@@ -1,25 +1,29 @@
 angular
   .module("ppip")
-  .controller('phoneCtrl', ['$scope', function($scope) {
+  .controller('phoneCtrl', ['$scope', 'apiService', function($scope, apiService) {
     $scope.message = "Click + to add a phone to your inventory"
 
     $scope.phones = [
       {
         name: "MyWP0",
-        accessCode: "12345",
-        online: true
+        toke: "12345",
+        status: 'online'
       },
       {
         name: "MyAndroid0",
-        accessCode: "67890",
-        online: false
+        toke: "67890",
+        status: 'offline'
       },
       {
         name: "MyIPhone0",
-        accessCode: "13579",
-        online: true
+        toke: "13579",
+        status: 'online'
       }
     ];
+
+    apiService.phone.list().success(function (res) {
+      $scope.phones = res;
+    })
 
     // phones that are pending in creation zone
     $scope.newPhones = [];
@@ -32,8 +36,12 @@ angular
       if (!!phone.name) {
         if (phone.name.length <= 10) {
           var idx = $scope.newPhones.indexOf(phone);
-          $scope.newPhones.splice(idx, 1);
-          $scope.phones.push(phone);
+
+          apiService.phone.create(phone.name).success(function (res) {
+            $scope.newPhones.splice(idx, 1);
+            $scope.phones.push(phone);
+          });
+
         } else {
           alert("Constrain yourself! Dump your phone if its name is more than 10 characters!")
         }

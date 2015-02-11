@@ -5,13 +5,13 @@ div(class="inventory")
       svg(version="1.1",xmlns="http://www.w3.org/2000/svg",xmlns:xlink="http://www.w3.org/1999/xlink",width="200px",height="300px")
         rect(width="100%", height="100%", style="fill:#222; stroke:lightgray; stroke-width:5")
         text(x="15", y="100", fill="white", font-size="24") {{phone.name}}
-        polygon(points="160,0 200,0, 200, 40", style="fill:rgb(63,81,181); stroke:lightgray; stroke-width:3" ng-if="phone.online")
-        //- polygon(points="160,0 200,0, 200, 40", style="fill:#8a1717; stroke:lightgray; stroke-width:3" ng-if="!phone.online")
+        polygon(points="160,0 200,0, 200, 40", style="fill:rgb(63,81,181); stroke:lightgray; stroke-width:3" ng-if="phone.status=='online'")
+        //- polygon(points="160,0 200,0, 200, 40", style="fill:#8a1717; stroke:lightgray; stroke-width:3" ng-if="phone.status=='offline'")
     li(ng-repeat="phone in newPhones")
       svg(version="1.1",xmlns="http://www.w3.org/2000/svg",xmlns:xlink="http://www.w3.org/1999/xlink",width="200px",height="300px")
         rect(width="100%", height="100%", style="fill:#fff; stroke:lightgray; stroke-width:10; stroke-dasharray:10,5")
-        foreignObject(width="200px", y="100", height="300px", )
-          body(xmlns="http://www.w3.org/1999/xhtml")
+        foreignObject(width="100%", y="100", height="100%", )
+          body(width="100%" xmlns="http://www.w3.org/1999/xhtml")
             md-content.md-padding(style="margin:0.5em")
               form
                 md-input-container
