@@ -19,6 +19,13 @@ module.exports = {
       type: 'string'
     },
 
+    status: {
+      type: 'string',
+      in: ['notStarted', 'inProgress', 'succeeded', 'failed'],
+      required: true,
+      defaultsTo: 'notStarted'
+    },
+
     phone: { // Many to one
       model: 'phone',
       required: true

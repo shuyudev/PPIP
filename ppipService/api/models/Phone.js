@@ -16,6 +16,10 @@ module.exports = {
       required: true
     },
 
+    deviceName: {
+      type: 'string'
+    },
+
     status: {
       type: 'string',
       in: ['offline', 'online'],
