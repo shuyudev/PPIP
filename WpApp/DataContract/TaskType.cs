@@ -8,6 +8,6 @@ namespace DataContract
 {
     public enum TaskType
     {
-        DownloadTask
+        Download
     }
 }

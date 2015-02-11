@@ -26,7 +26,7 @@ namespace App1
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private bool DevelopMode = true;
+        private bool DevelopMode = false;
         private string DeviceId = "";
         public MainPage()
         {
@@ -75,8 +75,12 @@ namespace App1
 
             foreach(TaskDetail taskDetail in taskDetails)
             {
-                ITask taskWorker = TaskFactory.CreateTask(taskDetail);
-                taskWorker.Execute();
+                try
+                {
+                    ITask taskWorker = TaskFactory.CreateTask(taskDetail);
+                    taskWorker.Execute();
+                }
+                catch{ }
             }
         }
     }

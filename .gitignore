@@ -54,3 +54,4 @@ config/local.js
 # Bower
 ########################
 bower_components
+/WpApp

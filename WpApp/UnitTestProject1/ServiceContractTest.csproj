@@ -52,8 +52,13 @@
   <ItemGroup>
     <Compile Include="LocalPPIPClientTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RemotePPIPClientTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataContract\DataContract.csproj">
+      <Project>{d5d6de15-b06b-49c3-82c2-163a790eb6ac}</Project>
+      <Name>DataContract</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PPIPClient\ServiceContract.csproj">
       <Project>{4aab0959-03bc-4a9f-81a8-825d4d617cf8}</Project>
       <Name>ServiceContract</Name>

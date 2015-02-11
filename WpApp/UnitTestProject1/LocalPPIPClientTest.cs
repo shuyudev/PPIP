@@ -1,6 +1,8 @@
-﻿using System;
+﻿using DataContract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ServiceContract;
+using System;
+using System.Collections.Generic;
 
 namespace UnitTestProject1
 {
@@ -10,11 +12,19 @@ namespace UnitTestProject1
         [TestMethod]
         public void CanRegister()
         {
-            Client client = new Client(false);
+            Client client = new Client(true);
+            var deviceId = client.Register("miliu-lumia-123", "5678");
 
-            var resp = client.Register("123", "1234");
+            Assert.AreEqual(deviceId, "5678");
+        }
 
-            Assert.AreEqual(resp, "1234");
+        [TestMethod]
+        public void CanPullTask()
+        {
+            Client client = new Client(true);
+            List<TaskDetail> result = client.PullTask("test");
+
+            Assert.IsNotNull(result);
         }
 
     }

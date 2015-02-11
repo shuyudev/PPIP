@@ -11,10 +11,16 @@ namespace WpApp.Task
     {
         internal static ITask CreateTask(TaskDetail task)
         {
-            string connectionstring = "DefaultEndpointsProtocol=https;AccountName=userfeedback;AccountKey=CRXei1BvPbtegj+0AfY5D3HlLGdSZ4XsBxIOG2PFPwJ7nVb14JrJnyueBG9ilkF36kYX8V4WJ3oeIteoVI9Jhg==";
-            string container = "maggie";
-            List<string> fileList = new List<string>() { "test.jpg" };
-            return new DownloadTaskWorker(connectionstring, container, fileList);
+            if(task.Type == TaskType.Download)
+            {
+                string connectionstring = string.Format("DefaultEndpointsProtocol=https;AccountName={0};AccountKey={1}", task.TaskInfo.StorageAccountName, task.TaskInfo.StorageAccountKey);
+                string container = task.TaskInfo.BlobContainer;
+                List<string> fileList = new List<string>() { task.TaskInfo.BlobName };
+
+                return new DownloadTaskWorker(connectionstring, container, fileList);
+            }
+
+            return null;
         }
     }
 }
