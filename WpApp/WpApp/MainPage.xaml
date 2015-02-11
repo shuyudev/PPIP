@@ -1,0 +1,28 @@
+﻿<Page
+    x:Class="App1.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:App1"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Pivot Title="PPIP Application">
+            <PivotItem Header="Register">
+                <Canvas HorizontalAlignment="Left" Height="391" Margin="29,69,0,0" VerticalAlignment="Top" Width="299">
+                    <TextBlock TextWrapping="Wrap" Text="Register Code:" Margin="0,0,-0.833,0" FontSize="25"/>
+                    <TextBox Name="TextBox_RegisterCode" HorizontalAlignment="Left" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="216" Canvas.Top="64" Canvas.Left="39"/>
+                    <Button Content="Register" HorizontalAlignment="Left" VerticalAlignment="Top" Click="Button_Click" Width="216" Height="72" Canvas.Top="157" Canvas.Left="39" />
+                </Canvas>
+
+            </PivotItem>
+            <PivotItem Header="Sync">
+                <Canvas HorizontalAlignment="Left" Height="391" Margin="29,69,0,0" VerticalAlignment="Top" Width="299">
+                    <Button Name="Button_Sync" Content="Sync !" HorizontalAlignment="Left" VerticalAlignment="Top" Width="216" Height="72" Canvas.Top="157" Canvas.Left="39" Click="Button_Sync_Click" />
+                </Canvas>
+            </PivotItem>
+        </Pivot>
+    </Grid>
+</Page>
