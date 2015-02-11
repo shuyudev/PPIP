@@ -16,11 +16,11 @@ module.exports = {
     }
 
     Phone.update({
-        token: token
-      }, {
-        status: 'online',
-        deviceName: deviceName
-      })
+      token: token
+    }, {
+      status: 'online',
+      deviceName: deviceName
+    })
     .exec(function (err, phones) {
       if (err) {
         return res.serverError(err);
