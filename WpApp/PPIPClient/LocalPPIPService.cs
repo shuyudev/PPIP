@@ -16,7 +16,20 @@ namespace ServiceContract
 
         public List<TaskDetail> PullTask(string deviceId)
         {
-            return new List<TaskDetail>() { new TaskDetail() };
+            return new List<TaskDetail>() 
+            { 
+                new TaskDetail()
+                {
+                    Type = TaskType.Download,
+                    TaskInfo = new DownloadTask()
+                    {
+                        BlobContainer = "miliutest",
+                        BlobName = "test.jpg",
+                        StorageAccountName = "userfeedback",
+                        StorageAccountKey = "CRXei1BvPbtegj+0AfY5D3HlLGdSZ4XsBxIOG2PFPwJ7nVb14JrJnyueBG9ilkF36kYX8V4WJ3oeIteoVI9Jhg=="
+                    }
+                }
+            };
         }
 
         public ResponseBase CompleteTask(string deviceId, string taskId, DeviceTaskStatus status)
