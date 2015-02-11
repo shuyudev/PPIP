@@ -1,3 +1,9 @@
+html *
+{
+   font-family: "Comic Sans MS", Helvetica, Arial, sans-serif;
+   font-weight: "lighter";
+}
+
 html {
   height: 100%;
 }

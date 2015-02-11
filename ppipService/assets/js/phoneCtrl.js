@@ -1,5 +1,6 @@
-angular.module("ppip", [])
-  .controller('PhonesController', ['$scope', function($scope) {
+angular
+  .module("ppip")
+  .controller('phoneCtrl', ['$scope', function($scope) {
     $scope.message = "Click + to add a phone to your inventory"
 
     $scope.phones = [

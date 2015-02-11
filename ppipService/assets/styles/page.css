@@ -1,0 +1,44 @@
+#page .md-button.nav-entry {
+  cursor: pointer;
+  line-height: 40px;
+  max-height: 40px;
+  text-align: left;
+  width: 100%;
+}
+
+#page .background {
+  background-color: #f8f4ee;
+}
+
+#page md-toolbar.md-theme-light {
+  background-color: #E5E0D8 !important;
+  color: #606060 !important;
+}
+
+#page md-toolbar.md-theme-dark {
+  background-color: #D3CFCA !important;
+  color: #606060 !important;
+}
+
+#page .md-button.nav-entry .fa {
+  width: 40px;
+  text-align: center;
+}
+
+#page .md-button.nav-entry span,
+#page .md-button.nav-entry b {
+  font-size: 18px;
+}
+
+#page .active .md-button.nav-entry {
+  font-weight: bold;
+}
+
+#page md-sidenav {
+  min-width: 220px;
+  max-width: 220px;
+}
+
+#page .md-toolbar-tools .md-button {
+  font-size: 18px;
+}
