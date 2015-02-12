@@ -23,19 +23,25 @@ namespace ServiceContract
             }
         }
 
-        public string Register(string deviceName, string registerKey)
+        public async Task<string> Register(string deviceName, string registerKey)
         {
-            return service.Register(deviceName, registerKey);
+            return await service.Register(deviceName, registerKey);
         }
 
-        public List<TaskDetail> PullTask(string deviceId)
+        public async Task<List<TaskDetail>> PullTask(string deviceId)
         {
-            return service.PullTask(deviceId);
+            return await service.PullTask(deviceId);
         }
 
-        public ResponseBase CompleteTask(string deviceId, string taskId, DeviceTaskStatus status)
+        public async Task<ResponseBase> CompleteTask(string deviceId, string taskId, DeviceTaskStatus status)
         {
-            throw new NotImplementedException();
+            return await service.CompleteTask(deviceId, taskId, status);
+        }
+
+
+        public async Task<ResponseBase> NotifyUploadComplete(string deviceId, int taskId, string blobName)
+        {
+            return await service.NotifyUploadComplete(deviceId, taskId, blobName);
         }
     }
 }

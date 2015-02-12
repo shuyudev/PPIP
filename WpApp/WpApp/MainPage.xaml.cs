@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using WpApp;
 using WpApp.Task;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=391641
@@ -26,8 +27,7 @@ namespace App1
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private bool DevelopMode = false;
-        private string DeviceId = "";
+        private Dictionary<int, TaskDetail> ScheduledTask = new Dictionary<int, TaskDetail>();
         public MainPage()
         {
             this.InitializeComponent();
@@ -51,27 +51,33 @@ namespace App1
             // this event is handled for you.
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            Client client = new Client(DevelopMode);
+            Client client = new Client(Configurations.DevelopMode);
 
             string registerCode = TextBox_RegisterCode.Text.Trim();
-            var resp = client.Register("Miliu-Lumia", registerCode);
+            var resp = await client.Register("Bofan-Lumia", registerCode);
 
             if(!string.IsNullOrEmpty(resp))
             {
-                MessageDialog msgBox = new MessageDialog(resp);
+                MessageDialog msgBox = new MessageDialog(string.Format("Register succeeded! Device id is {0}", resp));
                 msgBox.ShowAsync().GetResults();
 
-                DeviceId = resp;
+                Configurations.DeviceId = resp;
+            }
+            else
+            {
+                MessageDialog msgBox = new MessageDialog("Register failed, please check the network and register token in portal!");
+                msgBox.ShowAsync().GetResults();
             }
         }
 
-        private void Button_Sync_Click(object sender, RoutedEventArgs e)
+        private async void Button_Sync_Click(object sender, RoutedEventArgs e)
         {
-            Client client = new Client(DevelopMode);
+            Client client = new Client(Configurations.DevelopMode);
 
-            var taskDetails = client.PullTask(DeviceId);
+            List<TaskDetail> taskDetails = await client.PullTask(Configurations.DeviceId);
+            taskDetails.AddRange(ScheduledTask.Values);
 
             if(taskDetails == null)
             {
@@ -84,6 +90,11 @@ namespace App1
                 {
                     ITask taskWorker = TaskFactory.CreateTask(taskDetail);
                     taskWorker.Execute();
+
+                    if(taskDetail.Type == TaskType.Upload)
+                    {
+                        ScheduledTask[taskDetail.Id] = taskDetail;
+                    }
                 }
                 catch{ }
             }

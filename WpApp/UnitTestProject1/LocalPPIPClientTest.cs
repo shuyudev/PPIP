@@ -10,19 +10,19 @@ namespace UnitTestProject1
     public class LocalPPIPClientTest
     {
         [TestMethod]
-        public void CanRegister()
+        public async void CanRegister()
         {
             Client client = new Client(true);
-            var deviceId = client.Register("miliu-lumia-123", "5678");
+            var deviceId = await client.Register("miliu-lumia-123", "5678");
 
             Assert.AreEqual(deviceId, "5678");
         }
 
         [TestMethod]
-        public void CanPullTask()
+        public async void CanPullTask()
         {
             Client client = new Client(true);
-            List<TaskDetail> result = client.PullTask("test");
+            List<TaskDetail> result = await client.PullTask("test");
 
             Assert.IsNotNull(result);
         }

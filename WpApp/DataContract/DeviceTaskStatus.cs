@@ -5,7 +5,9 @@ using System.Text;
 
 namespace DataContract
 {
-    public class DeviceTaskStatus
+    public enum DeviceTaskStatus
     {
+        succeeded,
+        failed
     }
 }

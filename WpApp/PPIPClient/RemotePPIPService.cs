@@ -14,16 +14,18 @@ namespace ServiceContract
         private const string UriBase = @"http://ppip.cloudapp.net:1337/";
         private const string RegisterFormat = @"phone/register?token={0}&deviceName={1}";
         private const string PullTaskFormat = @"task/fetch?phoneId={0}";
+        private const string NotifyUploadCompleteFormat = @"task/uploadComplete/{0}?phoneId={1}&blobName={2}";
+        private const string CompleteTaskFormat = @"task/update/{0}?status={1}";
 
-        public string Register(string deviceName, string registerKey)
+        public async Task<string> Register(string deviceName, string registerKey)
         {
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(UriBase);
 
             string uri = string.Format(RegisterFormat, registerKey, deviceName);
-            
-            HttpResponseMessage response = client.GetAsync(uri).Result;
-            var content = response.Content.ReadAsStringAsync().Result;
+
+            HttpResponseMessage response = await client.PostAsync(uri, null);
+            var content = await response.Content.ReadAsStringAsync();
 
             try
             {
@@ -36,15 +38,15 @@ namespace ServiceContract
             }
         }
 
-        public List<TaskDetail> PullTask(string deviceId)
+        public async Task<List<TaskDetail>> PullTask(string deviceId)
         {
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(UriBase);
 
             string uri = string.Format(PullTaskFormat, deviceId);
 
-            HttpResponseMessage response = client.GetAsync(uri).Result;
-            var content = response.Content.ReadAsStringAsync().Result;
+            HttpResponseMessage response = await client.PostAsync(uri, null);
+            var content = await response.Content.ReadAsStringAsync();
 
             try
             {
@@ -57,9 +59,33 @@ namespace ServiceContract
             }
         }
 
-        public DataContract.ResponseBase CompleteTask(string deviceId, string taskId, DataContract.DeviceTaskStatus status)
+        public async Task<ResponseBase> CompleteTask(string deviceId, string taskId, DataContract.DeviceTaskStatus status)
         {
-            throw new NotImplementedException();
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(UriBase);
+
+            string uri = string.Format(CompleteTaskFormat, taskId, status);
+
+            HttpResponseMessage response = await client.PostAsync(uri, null);
+
+            return response.StatusCode == System.Net.HttpStatusCode.OK ?
+                new ResponseBase() { ResponseStatus = Status.Succeed }
+                : new ResponseBase() { ResponseStatus = Status.Failed };
+        }
+
+
+        public async Task<ResponseBase> NotifyUploadComplete(string deviceId, int taskId, string blobName)
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(UriBase);
+
+            string uri = string.Format(NotifyUploadCompleteFormat, taskId, deviceId, blobName);
+
+            HttpResponseMessage response = await client.PostAsync(uri, null);
+
+            return response.StatusCode == System.Net.HttpStatusCode.OK ? 
+                new ResponseBase() { ResponseStatus = Status.Succeed } 
+                : new ResponseBase() { ResponseStatus = Status.Failed };
         }
     }
 }

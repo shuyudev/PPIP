@@ -9,19 +9,19 @@ namespace ServiceContract
 {
     public class LocalPPIPService : IPPIPProtocol
     {
-        public string Register(string deviceName, string registerKey)
+        public async Task<string> Register(string deviceName, string registerKey)
         {
             return registerKey;
         }
 
-        public List<TaskDetail> PullTask(string deviceId)
+        public async Task<List<TaskDetail>> PullTask(string deviceId)
         {
             return new List<TaskDetail>() 
             { 
                 new TaskDetail()
                 {
-                    Type = TaskType.Download,
-                    TaskInfo = new DownloadTask()
+                    Type = TaskType.Upload,
+                    TaskInfo = new TaskInfo()
                     {
                         BlobContainer = "miliutest",
                         BlobName = "test.jpg",
@@ -32,9 +32,15 @@ namespace ServiceContract
             };
         }
 
-        public ResponseBase CompleteTask(string deviceId, string taskId, DeviceTaskStatus status)
+        public async Task<ResponseBase> CompleteTask(string deviceId, string taskId, DeviceTaskStatus status)
         {
             throw new NotImplementedException();
+        }
+
+
+        public async Task<ResponseBase> NotifyUploadComplete(string deviceId, int taskId, string blobName)
+        {
+            return new ResponseBase() { ResponseStatus = Status.Succeed };
         }
     }
 }

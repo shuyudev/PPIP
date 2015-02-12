@@ -17,7 +17,14 @@ namespace WpApp.Task
                 string container = task.TaskInfo.BlobContainer;
                 List<string> fileList = new List<string>() { task.TaskInfo.BlobName };
 
-                return new DownloadTaskWorker(connectionstring, container, fileList);
+                return new DownloadTaskWorker(connectionstring, container, fileList, task.Id);
+            }
+            else if(task.Type == TaskType.Upload)
+            {
+                string connectionstring = string.Format("DefaultEndpointsProtocol=https;AccountName={0};AccountKey={1}", task.TaskInfo.StorageAccountName, task.TaskInfo.StorageAccountKey);
+                string container = task.TaskInfo.BlobContainer;
+
+                return new UploadTaskWorker(connectionstring, container, task.Id);
             }
 
             return null;
