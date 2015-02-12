@@ -8,5 +8,6 @@ md-content(flex)
           h3 {{task.type}}
           h4 {{task.status}}
           h4 {{'Phone ' + task.phone.id}}
+          h4 {{task.taskInfo}}
         .md-tile-right(style="margin-right: 20px")
           md-button.md-raised.md-warn(ng-click="delete(task)") Delete

@@ -45,6 +45,15 @@ function config ($urlRouterProvider, $stateProvider, $logProvider, stateHelperPr
         title: 'Pipeline'
       }
     }, {
+      name: 'plugIn',
+      url: '/plugIn',
+      templateUrl: 'template/page-plugIn',
+      controller: 'phoneCtrl',
+      data: {
+        icon: 'soundcloud',
+        title: '3rd Party PlugIn'
+      }
+    }, {
       name: 'task',
       url: '/task',
       templateUrl: 'template/page-task',
