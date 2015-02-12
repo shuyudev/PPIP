@@ -41,7 +41,7 @@ function config ($urlRouterProvider, $stateProvider, $logProvider, stateHelperPr
       templateUrl: 'template/page-pipeline',
       controller: 'pipelineCtrl',
       data: {
-        icon: '',
+        icon: 'exchange',
         title: 'Pipeline'
       }
     }]

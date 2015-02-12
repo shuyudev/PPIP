@@ -4,7 +4,9 @@ div(class="inventory")
     li(ng-repeat="phone in phones")
       svg(version="1.1",xmlns="http://www.w3.org/2000/svg",xmlns:xlink="http://www.w3.org/1999/xlink",width="200px",height="300px")
         rect(width="100%", height="100%", style="fill:#222; stroke:lightgray; stroke-width:5")
-        text(x="15", y="100", fill="white", font-size="24") {{phone.name}}
+        text(x="15", y="100", fill="white", font-size="18") {{phone.name  + '(' + phone.id + ')'}}
+        text(x="15", y="140", fill="white", font-size="14") {{phone.deviceName}}
+        text(x="15", y="200", fill="white", font-size="14") {{'#' + phone.token}}
         polygon(points="160,0 200,0, 200, 40", style="fill:rgb(63,81,181); stroke:lightgray; stroke-width:3" ng-if="phone.status=='online'")
         //- polygon(points="160,0 200,0, 200, 40", style="fill:#8a1717; stroke:lightgray; stroke-width:3" ng-if="phone.status=='offline'")
     li(ng-repeat="phone in newPhones")

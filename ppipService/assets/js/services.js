@@ -18,5 +18,23 @@ function api ($http, $state, $log) {
     }
   }
 
+  apiService.pipeline = {
+    list: function () {
+      return $http.get('pipeline').error(errorAction);
+    },
+    create: function (pipelineName, pipelineType, inputPhones, outputPhones) {
+      return $http({
+        url: 'pipeline/create',
+        method: 'POST',
+        params: {
+          name: pipelineName,
+          type: pipelineType,
+          input: inputPhones,
+          output: outputPhones,
+        }
+      }).error(errorAction);
+    }
+  }
+
   return apiService;
 }
