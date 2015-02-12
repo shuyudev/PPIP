@@ -44,6 +44,33 @@ function config ($urlRouterProvider, $stateProvider, $logProvider, stateHelperPr
         icon: 'exchange',
         title: 'Pipeline'
       }
+    }, {
+      name: 'task',
+      url: '/task',
+      templateUrl: 'template/page-task',
+      controller: 'taskCtrl',
+      data: {
+        icon: 'tags',
+        title: 'task list'
+      }
+    }, {
+      name: 'phoneList',
+      url: '/phoneList',
+      templateUrl: 'template/page-phoneList',
+      controller: 'phoneCtrl',
+      data: {
+        icon: 'tags',
+        title: 'phone list'
+      }
+    }, {
+      name: 'pipelineList',
+      url: '/pipelineList',
+      templateUrl: 'template/page-pipelineList',
+      controller: 'pipelineCtrl',
+      data: {
+        icon: 'tags',
+        title: 'pipeline list'
+      }
     }]
   });
 

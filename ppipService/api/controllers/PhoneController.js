@@ -41,7 +41,8 @@ module.exports = {
       id: id
     }, {
       token: padNumber(Math.floor(Math.random()*9999), 4),
-      status: 'offline'
+      status: 'offline',
+      deviceName: null
     })
     .exec(function (err, phones) {
       if (err) {
