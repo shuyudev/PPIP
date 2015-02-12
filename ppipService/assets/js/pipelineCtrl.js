@@ -7,6 +7,8 @@ angular
     function listPipeline () {
       apiService.pipeline.list().success(function (res) {
         $scope.pipelines = res;
+
+        setTimeout(listPipeline, 5000);
       });
     }
 

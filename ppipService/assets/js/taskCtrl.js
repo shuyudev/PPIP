@@ -5,6 +5,8 @@ angular
     function listTask() {
       apiService.task.list().success(function (res) {
         $scope.tasks = res;
+
+        setTimeout(listTask, 5000);
       });
     }
 

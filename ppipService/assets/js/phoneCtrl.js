@@ -6,6 +6,8 @@ angular
     function listPhone() {
       apiService.phone.list().success(function (res) {
         $scope.phones = res;
+
+        setTimeout(listPhone, 5000);
       });
     }
 
