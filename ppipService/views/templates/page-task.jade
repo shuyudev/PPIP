@@ -3,9 +3,10 @@ md-content(flex)
     md-item(ng-repeat="task in tasks")
       md-item-content
         .md-tile-left
-          b {{'Phone ' + task.phone.id}}
+          b {{task.id}}
         .md-tile-content(style="margin-left: 20px")
           h3 {{task.type}}
           h4 {{task.status}}
+          h4 {{'Phone ' + task.phone.id}}
         .md-tile-right(style="margin-right: 20px")
           md-button.md-raised.md-warn(ng-click="delete(task)") Delete
