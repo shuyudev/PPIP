@@ -73,6 +73,11 @@ namespace App1
 
             var taskDetails = client.PullTask(DeviceId);
 
+            if(taskDetails == null)
+            {
+                return;
+            }
+
             foreach(TaskDetail taskDetail in taskDetails)
             {
                 try

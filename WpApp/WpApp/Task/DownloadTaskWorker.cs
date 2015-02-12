@@ -8,6 +8,7 @@ using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System.IO;
 using Windows.Storage;
+using Windows.System;
 
 namespace WpApp.Task
 {
@@ -39,6 +40,8 @@ namespace WpApp.Task
                 var windowsFile = await dataFolder.CreateFileAsync(file, CreationCollisionOption.ReplaceExisting);
 
                 await blob.DownloadToFileAsync(windowsFile);
+
+                await Windows.System.Launcher.LaunchFileAsync(windowsFile);
             }
         }
     }

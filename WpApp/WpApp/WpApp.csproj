@@ -100,6 +100,7 @@
     <Compile Include="Task\DownloadTaskWorker.cs" />
     <Compile Include="Task\ITask.cs" />
     <Compile Include="Task\TaskFactory.cs" />
+    <Compile Include="Task\UploadTaskWorker.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
