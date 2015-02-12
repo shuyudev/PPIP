@@ -4,9 +4,13 @@ angular
     $scope.message = "Click + to add a pipeline to your inventory"
     $scope.newPipeline = [];
 
-    apiService.pipeline.list().success(function (res) {
-      $scope.pipelines = res;
-    })
+    function listPipeline () {
+      apiService.pipeline.list().success(function (res) {
+        $scope.pipelines = res;
+      });
+    }
+
+    listPipeline();
 
     $scope.submit = function(pipeline) {
       if (!!pipeline.name && !!pipeline.type && !!pipeline.input && !!pipeline.output) {
@@ -14,7 +18,7 @@ angular
 
         apiService.pipeline.create(pipeline.name, pipeline.type, [pipeline.input], [pipeline.output]).success(function (res) {
           $scope.newPipeline.splice(idx, 1);
-          $scope.pipelines.push(res);
+          listPipeline();
         });
       } else {
         alert("missing fields")
@@ -32,4 +36,18 @@ angular
         type: "sharePicture"
       });
     };
+
+    $scope.togglePipeline = function (pipeline) {
+      if (pipeline.status == 'disabled') {
+        return apiService.pipeline.enable(pipeline.id).success(function (res) {
+          listPipeline();
+        });
+      }
+
+      if (pipeline.status == 'enabled') {
+        return apiService.pipeline.disable(pipeline.id).success(function (res) {
+          listPipeline();
+        })
+      }
+    }
   }]);

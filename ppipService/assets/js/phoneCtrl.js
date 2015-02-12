@@ -3,9 +3,13 @@ angular
   .controller('phoneCtrl', ['$scope', 'apiService', function($scope, apiService) {
     $scope.message = "Click + to add a phone to your inventory"
 
-    apiService.phone.list().success(function (res) {
-      $scope.phones = res;
-    })
+    function listPhone() {
+      apiService.phone.list().success(function (res) {
+        $scope.phones = res;
+      });
+    }
+
+    listPhone();
 
     // phones that are pending in creation zone
     $scope.newPhones = [];
@@ -16,7 +20,7 @@ angular
 
         apiService.phone.create(phone.name).success(function (res) {
           $scope.newPhones.splice(idx, 1);
-          $scope.phones.push(phone);
+          listPhone();
         });
       } else {
         alert("need a name!")
@@ -33,4 +37,10 @@ angular
         name: ""
       });
     };
+
+    $scope.refreshToken = function (phone) {
+      apiService.phone.refreshToken(phone.id).success(function (res) {
+        listPhone();
+      })
+    }
   }]);

@@ -15,6 +15,9 @@ function api ($http, $state, $log) {
     },
     create: function (phoneName) {
       return $http.get('phone/create?name=' + phoneName).error(errorAction);
+    },
+    refreshToken: function (phoneId) {
+      return $http.get('phone/refreshToken/' + phoneId).error(errorAction);
     }
   }
 
@@ -30,7 +33,19 @@ function api ($http, $state, $log) {
           name: pipelineName,
           type: pipelineType,
           input: inputPhones,
-          output: outputPhones,
+          output: outputPhones
+        }
+      }).error(errorAction);
+    },
+    enable: function (pipelineId) {
+      return $http.get('pipeline/enable/' + pipelineId).error(errorAction);
+    },
+    disable: function (pipelineId) {
+      return $http({
+        url: 'pipeline/update/' + pipelineId,
+        method: 'GET',
+        params: {
+          status: 'disabled'
         }
       }).error(errorAction);
     }
