@@ -50,4 +50,10 @@ angular
         })
       }
     }
+
+    $scope.delete = function (pipeline) {
+      apiService.pipeline.delete(pipeline.id).success(function (res) {
+        listPipeline();
+      })
+    }
   }]);

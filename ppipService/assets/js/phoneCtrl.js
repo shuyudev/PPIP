@@ -43,4 +43,10 @@ angular
         listPhone();
       })
     }
+
+    $scope.delete = function (phone) {
+      apiService.phone.delete(phone.id).success(function (res) {
+        listPhone();
+      })
+    }
   }]);

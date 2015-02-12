@@ -18,6 +18,9 @@ function api ($http, $state, $log) {
     },
     refreshToken: function (phoneId) {
       return $http.get('phone/refreshToken/' + phoneId).error(errorAction);
+    },
+    delete: function (phoneId) {
+      return $http.get('phone/destroy/' + phoneId).error(errorAction);
     }
   }
 
@@ -48,6 +51,18 @@ function api ($http, $state, $log) {
           status: 'disabled'
         }
       }).error(errorAction);
+    },
+    delete: function (pipelineId) {
+      return $http.get('pipeline/destroy/' + pipelineId).error(errorAction);
+    }
+  }
+
+  apiService.task = {
+    list: function () {
+      return $http.get('task').error(errorAction);
+    },
+    delete: function (taskId) {
+      return $http.get('task/destroy/' + taskId).error(errorAction);
     }
   }
 
