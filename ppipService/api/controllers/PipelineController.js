@@ -31,8 +31,6 @@ module.exports = {
 
       if (pipeline.type == 'sharePicture') {
 
-        sails.log.debug(id);
-
         pipeline.status = 'enabled';
         pipeline.pipelineInfo = {
           storageAccountName: 'testpipeline',
@@ -44,8 +42,6 @@ module.exports = {
           if (err) {
             return res.serverError(err);
           }
-
-          sails.log.debug(pipeline);
 
           Task.create(Task.newUploadTasks(pipeline))
           .exec(function (err, tasks) {

@@ -1,0 +1,11 @@
+md-content(flex)
+  md-list
+    md-item(ng-repeat="pipeline in pipelines")
+      md-item-content
+        .md-tile-left
+          b {{pipeline.id}}
+        .md-tile-content(style="margin-left: 20px")
+          h3 {{pipeline.name}}
+          h4 {{pipeline.type}} / {{pipeline.status}}
+        .md-tile-right(style="margin-right: 20px")
+          md-button.md-raised.md-warn(ng-click="delete(pipeline)") Delete

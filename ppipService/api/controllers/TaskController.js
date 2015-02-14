@@ -14,6 +14,8 @@ module.exports = {
       return res.missingFields(['phoneId']);
     }
 
+    sails.log.debug(phoneId);
+
     Task.update({
       phone: phoneId,
       status: 'notStarted'

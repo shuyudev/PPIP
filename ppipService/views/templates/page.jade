@@ -1,0 +1,21 @@
+div(id="page" layout="row" layout-fill)
+  md-sidenav.md-sidenav-left.md-whiteframe-z4(md-component-id="left" md-is-locked-open="$media('gt-md')")
+    div(layout="column" layout-fill)
+      md-toolbar.md-theme-dark
+        h1.md-toolbar-tools PPIP
+      md-content(layout="column")
+        a(ng-repeat="navEntry in navEntries | filter:ifCanNav"
+          ui-sref="{{navEntry.name}}" ui-sref-active="active")
+          md-button.nav-entry
+            i.fa.fa-2x(class="fa-{{navEntry.data.icon}}")
+            | {{navEntry.data.title}}
+  div.background(layout="column" layout-fill)
+    md-toolbar.md-theme-light
+      .md-toolbar-tools(layout="row")
+        md-button(hide-gt-md ng-click="clickToggleNav()")
+          span.fa.fa-th-list.fa-2x
+        h1 Phone Pipeline Integration Platform
+
+    md-content.background.md-padding(layout="column" layout-fill scroll-y)
+      //- nested ui-view is not working well in jade
+      <div ui-view layout="column" layout-fill></div>
