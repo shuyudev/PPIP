@@ -8,6 +8,7 @@ using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System.IO;
 using Windows.Storage;
+using Windows.System;
 
 namespace WpApp.Task
 {
@@ -15,14 +16,14 @@ namespace WpApp.Task
     {
         private CloudStorageAccount StorageAccount;
         private string Container;
-        private List<string> FileList;
+        private string File;
         private const string Folder = "ShareFolder";
 
-        public DownloadTaskWorker(string connectionString, string container, List<string> fileList)
+        public DownloadTaskWorker(string connectionString, string container, string file)
         {
             StorageAccount = CloudStorageAccount.Parse(connectionString);
             this.Container = container;
-            this.FileList = fileList;
+            this.File = file;
         }
 
         public async void Execute()
@@ -32,14 +33,15 @@ namespace WpApp.Task
             CloudBlobContainer container = blobClient.GetContainerReference(Container);
             StorageFolder dataFolder = KnownFolders.PicturesLibrary;
 
-            foreach(var file in FileList)
-            {
-                var blob = container.GetBlockBlobReference(file);
+            var blob = container.GetBlockBlobReference(File);
 
-                var windowsFile = await dataFolder.CreateFileAsync(file, CreationCollisionOption.ReplaceExisting);
+            var windowsFile = await dataFolder.CreateFileAsync(File, CreationCollisionOption.ReplaceExisting);
 
-                await blob.DownloadToFileAsync(windowsFile);
-            }
+            await blob.DownloadToFileAsync(windowsFile);
+
+            await System.Threading.Tasks.Task.Delay(TimeSpan.FromSeconds(5));
+
+            await Launcher.LaunchFileAsync(windowsFile);
         }
     }
 }
