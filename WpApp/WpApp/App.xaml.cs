@@ -7,6 +7,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -15,6 +16,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
+using WpApp.Task;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=391641
 
@@ -42,8 +44,8 @@ namespace App1
         /// will be used when the application is launched to open a specific file, to display
         /// search results, and so forth.
         /// </summary>
-        /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        /// <param name="args">Details about the launch request and process.</param>
+        protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
@@ -64,7 +66,7 @@ namespace App1
                 // TODO: change this value to a cache size that is appropriate for your application
                 rootFrame.CacheSize = 1;
 
-                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
+                if (args.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
                     // TODO: Load state from previously suspended application
                 }
@@ -91,7 +93,7 @@ namespace App1
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
                 // parameter
-                if (!rootFrame.Navigate(typeof(MainPage), e.Arguments))
+                if (!rootFrame.Navigate(typeof(MainPage), args.Arguments))
                 {
                     throw new Exception("Failed to create initial page");
                 }
@@ -99,6 +101,32 @@ namespace App1
 
             // Ensure the current window is active
             Window.Current.Activate();
+
+            if (args.PreviousExecutionState != ApplicationExecutionState.Suspended)
+            {
+                // App is being resumed afted being termination, so settings
+                // should be restored.
+
+                if (ApplicationData.Current.LocalSettings.Values.ContainsKey(AppCache.DeviceIdName))
+                {
+                    AppCache.DeviceId = (string)ApplicationData.Current.LocalSettings.Values[AppCache.DeviceIdName];
+                }
+
+                if (ApplicationData.Current.LocalSettings.Values.ContainsKey(AppCache.UploadedFilesName))
+                {
+                    AppCache.UploadedFiles = (string)ApplicationData.Current.LocalSettings.Values[AppCache.UploadedFilesName];
+                }
+
+                if (ApplicationData.Current.LocalSettings.Values.ContainsKey(AppCache.UploadTaskName))
+                {
+                    AppCache.UploadTask = (string)ApplicationData.Current.LocalSettings.Values[AppCache.UploadTaskName];
+                }
+            }
+            else
+            {
+                // App is being resumed after being suspended, so typically you do not
+                // need to restore settings.
+            }
         }
 
         /// <summary>

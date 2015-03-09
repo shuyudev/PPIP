@@ -1,4 +1,5 @@
 ﻿using DataContract;
+using Newtonsoft.Json;
 using ServiceContract;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -26,8 +28,6 @@ namespace App1
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private bool DevelopMode = false;
-        private string DeviceId = "";
         public MainPage()
         {
             this.InitializeComponent();
@@ -49,11 +49,15 @@ namespace App1
             // Windows.Phone.UI.Input.HardwareButtons.BackPressed event.
             // If you are using the NavigationHelper provided by some templates,
             // this event is handled for you.
+            if (!string.IsNullOrEmpty(AppCache.DeviceId))
+            {
+                TextBox_RegisterCode.Text = string.Format("Registered:{0}", AppCache.DeviceId);
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Client client = new Client(DevelopMode);
+            Client client = new Client(AppCache.DevelopMode);
 
             string registerCode = TextBox_RegisterCode.Text.Trim();
             var resp = client.Register("Miliu-Lumia", registerCode);
@@ -63,17 +67,41 @@ namespace App1
                 MessageDialog msgBox = new MessageDialog(resp);
                 msgBox.ShowAsync().GetResults();
 
-                DeviceId = resp;
+                //Clean AppCache
+                AppCache.ClearCache();
+
+                AppCache.DeviceId = resp;
+                ApplicationData.Current.LocalSettings.Values[AppCache.DeviceIdName] = AppCache.DeviceId;
             }
         }
 
         private void Button_Sync_Click(object sender, RoutedEventArgs e)
         {
-            Client client = new Client(DevelopMode);
+            Client client = new Client(AppCache.DevelopMode);
+            //execute local scheduled tasks.
+            if (AppCache.UploadTask != null)
+            {
+                var uploadTask = JsonConvert.DeserializeObject<TaskDetail>(AppCache.UploadTask);
 
-            var taskDetails = client.PullTask(DeviceId);
+                if (uploadTask != null)
+                {
+                    try
+                    {
+                        ITask taskWorker = TaskFactory.CreateTask(uploadTask);
+                        taskWorker.Execute();
+                    }
+                    catch { }
+                }
+            }
 
-            foreach(TaskDetail taskDetail in taskDetails)
+            var taskDetails = client.PullTask(AppCache.DeviceId);
+
+            if(taskDetails == null)
+            {
+                return;
+            }
+
+            foreach (TaskDetail taskDetail in taskDetails)
             {
                 try
                 {

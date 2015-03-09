@@ -17,7 +17,6 @@ namespace WpApp.Task
         private CloudStorageAccount StorageAccount;
         private string Container;
         private string File;
-        private const string Folder = "ShareFolder";
 
         public DownloadTaskWorker(string connectionString, string container, string file)
         {

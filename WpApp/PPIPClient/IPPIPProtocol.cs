@@ -12,5 +12,6 @@ namespace ServiceContract
         string Register(string deviceName, string registerKey);
         List<TaskDetail> PullTask(string deviceId);
         ResponseBase CompleteTask(string deviceId, string taskId, DeviceTaskStatus status);
+        ResponseBase CompleteUploadTask(string deviceId, string taskId, string blobPath);
     }
 }

@@ -37,5 +37,10 @@ namespace ServiceContract
         {
             throw new NotImplementedException();
         }
+
+        public ResponseBase CompleteUploadTask(string deviceId, string taskId, string blobPath)
+        {
+            return service.CompleteUploadTask(deviceId, taskId, blobPath);
+        }
     }
 }
