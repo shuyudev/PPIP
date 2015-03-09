@@ -8,6 +8,7 @@ namespace DataContract
 {
     public enum TaskType
     {
-        Download
+        download,
+        upload
     }
 }

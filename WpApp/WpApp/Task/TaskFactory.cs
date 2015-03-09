@@ -11,7 +11,7 @@ namespace WpApp.Task
     {
         internal static ITask CreateTask(TaskDetail task)
         {
-            if(task.Type == TaskType.Download)
+            if(task.Type == TaskType.download)
             {
                 string connectionstring = string.Format("DefaultEndpointsProtocol=https;AccountName={0};AccountKey={1}", task.TaskInfo.StorageAccountName, task.TaskInfo.StorageAccountKey);
                 string container = task.TaskInfo.BlobContainer;

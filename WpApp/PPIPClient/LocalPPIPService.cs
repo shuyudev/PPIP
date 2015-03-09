@@ -20,8 +20,8 @@ namespace ServiceContract
             { 
                 new TaskDetail()
                 {
-                    Type = TaskType.Download,
-                    TaskInfo = new DownloadTask()
+                    Type = TaskType.download,
+                    TaskInfo = new TaskInfo()
                     {
                         BlobContainer = "miliutest",
                         BlobName = "test.jpg",
