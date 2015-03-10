@@ -34,24 +34,20 @@ namespace WpApp.Task
         {
             try
             {
-                Dictionary<StorageFile, bool> totalFiles = await LoadFilesFromStorage();
-                totalFiles.
-                SkipUploadedFiles(totalFiles);
-
-                StringBuilder toBeUploadedFiles = new StringBuilder();
-                var fileList = totalFiles.Where(kvp => !kvp.Value);
-
-                foreach (var file in fileList)
+                IReadOnlyList<StorageFile> totalFiles = await LoadFilesFromStorage();
+                if (totalFiles.Count > 0)
                 {
-                    UploadFile(file.Key);
-                    toBeUploadedFiles.Append(file.Key.Name);
-                    toBeUploadedFiles.Append(",");
-                    break;
-                }
+                    var recentFile = totalFiles.OrderByDescending(file => file.DateCreated).ElementAt(0);
 
-                SaveUploadedFiles(toBeUploadedFiles);
+                    if (recentFile != null && AppCache.UploadedFiles != recentFile.Name)
+                    {
+                        UploadFile(recentFile);
+                        AppCache.UploadedFiles = recentFile.Name;
+                        ApplicationData.Current.LocalSettings.Values[AppCache.UploadedFilesName] = AppCache.UploadedFiles;
+                    }
+                }
             }
-            catch(Exception e) { }
+            catch(Exception) { }
         }
 
         private void SaveUploadedFiles(StringBuilder toBeUploadedFiles)
@@ -101,18 +97,12 @@ namespace WpApp.Task
             }
         }
 
-        private async Task<Dictionary<StorageFile, bool>> LoadFilesFromStorage()
+        private async Task<IReadOnlyList<StorageFile>> LoadFilesFromStorage()
         {
             StorageFolder dataFolder = KnownFolders.CameraRoll;
             var files = await dataFolder.GetFilesAsync();
 
-            Dictionary<StorageFile, bool> result = new Dictionary<StorageFile, bool>();
-            foreach(var file in files)
-            {
-                result.Add(file, false);
-            }
-
-            return result;
+            return files;
         }
     }
 }
