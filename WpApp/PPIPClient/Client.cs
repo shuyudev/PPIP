@@ -33,9 +33,9 @@ namespace ServiceContract
             return service.PullTask(deviceId);
         }
 
-        public ResponseBase CompleteTask(string deviceId, string taskId, DeviceTaskStatus status)
+        public ResponseBase CompleteTask(string deviceId, string taskId)
         {
-            throw new NotImplementedException();
+            return service.CompleteTask(deviceId, taskId);
         }
 
         public ResponseBase CompleteUploadTask(string deviceId, string taskId, string blobPath)

@@ -35,6 +35,7 @@ namespace WpApp.Task
             try
             {
                 Dictionary<StorageFile, bool> totalFiles = await LoadFilesFromStorage();
+                totalFiles.
                 SkipUploadedFiles(totalFiles);
 
                 StringBuilder toBeUploadedFiles = new StringBuilder();

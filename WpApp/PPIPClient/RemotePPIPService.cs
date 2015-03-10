@@ -15,7 +15,7 @@ namespace ServiceContract
         private const string RegisterFormat = @"phone/register?token={0}&deviceName={1}";
         private const string PullTaskFormat = @"task/fetch?phoneId={0}";
         private const string CompleteUploadTaskFormat = @"task/uploadComplete/{0}?phoneId={1}&blobName={2}";
-        private const string CompleteDownloadTaskFormat = @"task/update/{0}?status={1}";
+        private const string CompleteDownloadTaskFormat = @"task/update/{0}?status=succeeded";
 
         public string Register(string deviceName, string registerKey)
         {
@@ -24,7 +24,7 @@ namespace ServiceContract
 
             string uri = string.Format(RegisterFormat, registerKey, deviceName);
             
-            HttpResponseMessage response = client.GetAsync(uri).Result;
+            HttpResponseMessage response = client.PostAsync(uri, null).Result;
             var content = response.Content.ReadAsStringAsync().Result;
 
             try
@@ -45,7 +45,7 @@ namespace ServiceContract
 
             string uri = string.Format(PullTaskFormat, deviceId);
 
-            HttpResponseMessage response = client.GetAsync(uri).Result;
+            HttpResponseMessage response = client.PostAsync(uri, null).Result;
             var content = response.Content.ReadAsStringAsync().Result;
 
             try
@@ -59,9 +59,29 @@ namespace ServiceContract
             }
         }
 
-        public DataContract.ResponseBase CompleteTask(string deviceId, string taskId, DataContract.DeviceTaskStatus status)
+        public DataContract.ResponseBase CompleteTask(string deviceId, string taskId)
         {
-            throw new NotImplementedException();
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(UriBase);
+
+            string uri = string.Format(CompleteDownloadTaskFormat, taskId);
+
+            HttpResponseMessage response = client.PostAsync(uri, null).Result;
+            var content = response.Content.ReadAsStringAsync().Result;
+
+            try
+            {
+                var result = JsonConvert.DeserializeObject<List<TaskDetail>>(content);
+                if (result != null)
+                {
+                    return new ResponseBase() { ResponseStatus = Status.Succeed };
+                }
+            }
+            catch
+            {
+            }
+
+            return new ResponseBase() { ResponseStatus = Status.Failed };
         }
 
         public ResponseBase CompleteUploadTask(string deviceId, string taskId, string blobPath)
@@ -71,7 +91,7 @@ namespace ServiceContract
 
             string uri = string.Format(CompleteUploadTaskFormat, taskId, deviceId, blobPath);
 
-            HttpResponseMessage response = client.GetAsync(uri).Result;
+            HttpResponseMessage response = client.PostAsync(uri, null).Result;
             var content = response.Content.ReadAsStringAsync().Result;
 
             try

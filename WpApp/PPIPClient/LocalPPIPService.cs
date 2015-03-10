@@ -32,7 +32,7 @@ namespace ServiceContract
             };
         }
 
-        public ResponseBase CompleteTask(string deviceId, string taskId, DeviceTaskStatus status)
+        public ResponseBase CompleteTask(string deviceId, string taskId)
         {
             throw new NotImplementedException();
         }

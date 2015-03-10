@@ -20,7 +20,7 @@ namespace WpApp.Task
                 string file = task.TaskInfo.BlobName;
                 string taskId = task.Id;
 
-                return new DownloadTaskWorker(connectionstring, container, file);
+                return new DownloadTaskWorker(connectionstring, container, file, AppCache.DeviceId, taskId);
             }
 
             if (task.Type == TaskType.upload)

@@ -9,6 +9,7 @@ using Microsoft.WindowsAzure.Storage.Blob;
 using System.IO;
 using Windows.Storage;
 using Windows.System;
+using ServiceContract;
 
 namespace WpApp.Task
 {
@@ -17,12 +18,16 @@ namespace WpApp.Task
         private CloudStorageAccount StorageAccount;
         private string Container;
         private string File;
+        private string DeviceId;
+        private string TaskId;
 
-        public DownloadTaskWorker(string connectionString, string container, string file)
+        public DownloadTaskWorker(string connectionString, string container, string file, string deviceId, string taskId)
         {
             StorageAccount = CloudStorageAccount.Parse(connectionString);
             this.Container = container;
             this.File = file;
+            this.DeviceId = deviceId;
+            this.TaskId = taskId;
         }
 
         public async void Execute()
@@ -39,6 +44,10 @@ namespace WpApp.Task
             await blob.DownloadToFileAsync(windowsFile);
 
             await System.Threading.Tasks.Task.Delay(TimeSpan.FromSeconds(5));
+
+            Client client = new Client(AppCache.DevelopMode);
+
+            var response = client.CompleteTask(DeviceId, TaskId);
 
             await Launcher.LaunchFileAsync(windowsFile);
         }
