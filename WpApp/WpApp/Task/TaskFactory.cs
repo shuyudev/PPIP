@@ -29,6 +29,7 @@ namespace WpApp.Task
                 string container = task.TaskInfo.BlobContainer;
 
                 ApplicationData.Current.LocalSettings.Values[AppCache.UploadTaskName] = JsonConvert.SerializeObject(task);
+                AppCache.UploadTask = (string) ApplicationData.Current.LocalSettings.Values[AppCache.UploadTaskName];
 
                 return new UploadTaskWorker(connectionstring, container, AppCache.DeviceId, task.Id);
             }
