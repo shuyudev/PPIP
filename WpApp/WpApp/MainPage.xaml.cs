@@ -62,7 +62,7 @@ namespace App1
             string registerCode = TextBox_RegisterCode.Text.Trim();
             var resp = client.Register("Miliu-Lumia", registerCode);
 
-            if(!string.IsNullOrEmpty(resp))
+            if (!string.IsNullOrEmpty(resp))
             {
                 MessageDialog msgBox = new MessageDialog(string.Format("Registered, phone Id is {0}", resp));
                 msgBox.ShowAsync().GetResults();
@@ -72,6 +72,14 @@ namespace App1
 
                 AppCache.DeviceId = resp;
                 ApplicationData.Current.LocalSettings.Values[AppCache.DeviceIdName] = AppCache.DeviceId;
+
+                if (_timer != null)
+                {
+                    _timer.Stop();
+                }
+
+                _timer = null;
+                Button_Sync.Visibility = Visibility.Visible;
             }
             else
             {
@@ -82,39 +90,60 @@ namespace App1
 
         private void Button_Sync_Click(object sender, RoutedEventArgs e)
         {
-            Client client = new Client(AppCache.DevelopMode);
-            //execute local scheduled tasks.
-            if (AppCache.UploadTask != null)
-            {
-                var uploadTask = JsonConvert.DeserializeObject<TaskDetail>(AppCache.UploadTask);
-
-                if (uploadTask != null)
-                {
-                    try
-                    {
-                        ITask taskWorker = TaskFactory.CreateTask(uploadTask);
-                        taskWorker.Execute();
-                    }
-                    catch { }
-                }
-            }
-
-            var taskDetails = client.PullTask(AppCache.DeviceId);
-
-            if(taskDetails == null)
+            if (_timer != null)
             {
                 return;
             }
 
-            foreach (TaskDetail taskDetail in taskDetails)
-            {
-                try
+            _timer = new DispatcherTimer();
+            _timer.Tick +=
+                (o, o1) =>
                 {
-                    ITask taskWorker = TaskFactory.CreateTask(taskDetail);
-                    taskWorker.Execute();
-                }
-                catch{ }
-            }
+                    Client client = new Client(AppCache.DevelopMode);
+                    //execute local scheduled tasks.
+                    if (AppCache.UploadTask != null)
+                    {
+                        var uploadTask = JsonConvert.DeserializeObject<TaskDetail>(AppCache.UploadTask);
+
+                        if (uploadTask != null)
+                        {
+                            try
+                            {
+                                ITask taskWorker = TaskFactory.CreateTask(uploadTask);
+                                taskWorker.Execute();
+                            }
+                            catch
+                            {
+                            }
+                        }
+                    }
+
+                    var taskDetails = client.PullTask(AppCache.DeviceId);
+
+                    if (taskDetails == null)
+                    {
+                        return;
+                    }
+
+                    foreach (TaskDetail taskDetail in taskDetails)
+                    {
+                        try
+                        {
+                            ITask taskWorker = TaskFactory.CreateTask(taskDetail);
+                            taskWorker.Execute();
+                        }
+                        catch
+                        {
+                        }
+                    }
+                };
+
+            _timer.Interval = new TimeSpan(0, 0, 0, 2);
+            _timer.Start();
+
+            Button_Sync.Visibility = Visibility.Collapsed;
         }
+
+        private DispatcherTimer _timer;
     }
 }
