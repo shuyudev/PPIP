@@ -64,7 +64,7 @@ namespace App1
 
             if(!string.IsNullOrEmpty(resp))
             {
-                MessageDialog msgBox = new MessageDialog(resp);
+                MessageDialog msgBox = new MessageDialog(string.Format("Registered, phone Id is {0}", resp));
                 msgBox.ShowAsync().GetResults();
 
                 //Clean AppCache
@@ -72,6 +72,11 @@ namespace App1
 
                 AppCache.DeviceId = resp;
                 ApplicationData.Current.LocalSettings.Values[AppCache.DeviceIdName] = AppCache.DeviceId;
+            }
+            else
+            {
+                MessageDialog msgBox = new MessageDialog("Register failed!Please check the network!");
+                msgBox.ShowAsync().GetResults();
             }
         }
 
